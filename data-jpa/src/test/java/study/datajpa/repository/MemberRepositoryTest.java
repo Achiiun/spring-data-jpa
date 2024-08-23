@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import study.datajpa.dto.MemberDto;
 import study.datajpa.entity.Member;
+import study.datajpa.entity.Team;
 
 import java.util.List;
 
@@ -19,6 +21,9 @@ public class MemberRepositoryTest {
 
   @Autowired
   MemberRepository memberRepository;
+
+  @Autowired
+  TeamRepository teamRepository;
 
   @Test
   public void testMember() {
@@ -85,5 +90,50 @@ public class MemberRepositoryTest {
     List<Member> result = memberRepository.findByUsername("AAA");
     Member findMember = result.get(0);
     assertThat(findMember).isEqualTo(m1);
+  }
+
+  @Test
+  public void testQuery() {
+    Member m1 = new Member("AAA", 10);
+    Member m2 = new Member("AAA", 20);
+    memberRepository.save(m1);
+    memberRepository.save(m2);
+
+    List<Member> result = memberRepository.findUser("AAA",10);
+    assertThat(result.get(0)).isEqualTo(m1);
+  }
+
+  @Test
+  public void findUsernameList() {
+    Member m1 = new Member("AAA", 10);
+    Member m2 = new Member("AAA", 20);
+    memberRepository.save(m1);
+    memberRepository.save(m2);
+
+    List<String> usernameList = memberRepository.findUsernameList();
+    for (String username : usernameList) {
+      System.out.println("username = " + username);
+    }
+  }
+
+  @Test
+  public void findMemberDto() {
+    Team teamA = new Team("teamA");
+    Team teamB = new Team("teamB");
+    teamRepository.save(teamA);
+    teamRepository.save(teamB);
+
+    Member m1 = new Member("AAA", 10);
+    Member m2 = new Member("AAA", 20);
+    m1.setTeam(teamA);
+    m2.setTeam(teamB);
+
+    memberRepository.save(m1);
+    memberRepository.save(m2);
+
+    List<MemberDto> memberDto = memberRepository.findMemberDto();
+    for (MemberDto dto : memberDto) {
+      System.out.println("dto = " + dto);
+    }
   }
 }
