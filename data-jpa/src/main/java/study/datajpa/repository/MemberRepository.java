@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Member, Long>, MemberRepositoryCustom {
+
   List<Member> findByUsernameAndAgeGreaterThan(String username, int age);
 
   List<Member> findHelloBy();
@@ -36,7 +37,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   List<Member> findByNames(@Param("names") Collection<String> names);
 
   List<Member> findListByUsername(String username); //컬렉션
+
   Member findMemberByUsername(String username); //단건
+
   Optional<Member> findOptionalByUsername(String username); //단건 Optional
 
   @Query(value = "select m from Member m left join m.team t",
@@ -59,7 +62,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
   @Query("select m from Member m")
   List<Member> findMemberEntityGraph();
 
-//  @EntityGraph(attributePaths = {"team"})
+  //  @EntityGraph(attributePaths = {"team"})
   @EntityGraph("Member.all")
   List<Member> findByUsername(String username);
 
