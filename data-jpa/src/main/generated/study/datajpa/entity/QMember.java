@@ -22,9 +22,17 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
+    public final QBaseEntity _super = new QBaseEntity(this);
+
     public final NumberPath<Integer> age = createNumber("age", Integer.class);
 
+    //inherited
+    public final StringPath createdBy = _super.createdBy;
+
     public final NumberPath<Long> id = createNumber("id", Long.class);
+
+    //inherited
+    public final StringPath lastModifiedBy = _super.lastModifiedBy;
 
     public final QTeam team;
 

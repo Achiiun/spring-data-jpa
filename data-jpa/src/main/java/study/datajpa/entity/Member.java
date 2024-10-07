@@ -4,7 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString(of = {"id", "username", "age"})
 @NamedQuery(
@@ -12,9 +13,10 @@ import lombok.*;
   query = "select m from Member m where m.username = :username"
 )
 @NamedEntityGraph(name = "Member.all", attributeNodes = @NamedAttributeNode("team"))
-public class Member {
+public class Member extends BaseEntity {
 
-  @Id @GeneratedValue
+  @Id
+  @GeneratedValue
   @Column(name = "member_id")
   private long id;
   private String username;
